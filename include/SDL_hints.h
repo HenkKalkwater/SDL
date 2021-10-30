@@ -1000,8 +1000,8 @@ extern "C" {
  *  needs to take care of drawing the content in the right orientation (the
  *  framebuffer is always in portrait mode).
  *
- *  This variable can be one of the following values:
- *    "primary" (default), "portrait", "landscape", "inverted-portrait", "inverted-landscape"
+ *  This variable is a space-separated list of the following values: (empty = "primary")
+ *    "primary", "portrait", "landscape", "inverted-portrait", "inverted-landscape"
  */
 #define SDL_HINT_QTWAYLAND_CONTENT_ORIENTATION "SDL_QTWAYLAND_CONTENT_ORIENTATION"
 

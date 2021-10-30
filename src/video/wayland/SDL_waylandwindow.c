@@ -963,15 +963,23 @@ QtExtendedSurface_OnHintChanged(void *userdata, const char *name,
         int32_t orientation = QT_EXTENDED_SURFACE_ORIENTATION_PRIMARYORIENTATION;
 
         if (newValue != NULL) {
-            if (SDL_strcmp(newValue, "portrait") == 0) {
-                orientation = QT_EXTENDED_SURFACE_ORIENTATION_PORTRAITORIENTATION;
-            } else if (SDL_strcmp(newValue, "landscape") == 0) {
-                orientation = QT_EXTENDED_SURFACE_ORIENTATION_LANDSCAPEORIENTATION;
-            } else if (SDL_strcmp(newValue, "inverted-portrait") == 0) {
-                orientation = QT_EXTENDED_SURFACE_ORIENTATION_INVERTEDPORTRAITORIENTATION;
-            } else if (SDL_strcmp(newValue, "inverted-landscape") == 0) {
-                orientation = QT_EXTENDED_SURFACE_ORIENTATION_INVERTEDLANDSCAPEORIENTATION;
+            char *tmp = SDL_strdup(newValue);
+            char *saveptr = NULL;
+
+            char *flag = SDL_strtokr(tmp, ",", &saveptr);
+            while (flag) {
+                if (SDL_strcmp(flag, "portrait") == 0) {
+                    orientation |= QT_EXTENDED_SURFACE_ORIENTATION_PORTRAITORIENTATION;
+                } else if (SDL_strcmp(flag, "landscape") == 0) {
+                    orientation |= QT_EXTENDED_SURFACE_ORIENTATION_LANDSCAPEORIENTATION;
+                } else if (SDL_strcmp(flag, "inverted-portrait") == 0) {
+                    orientation |= QT_EXTENDED_SURFACE_ORIENTATION_INVERTEDPORTRAITORIENTATION;
+                } else if (SDL_strcmp(flag, "inverted-landscape") == 0) {
+                    orientation |= QT_EXTENDED_SURFACE_ORIENTATION_INVERTEDLANDSCAPEORIENTATION;
+                }
+                flag = SDL_strtokr(NULL, ",", &saveptr);
             }
+            SDL_free(tmp);
         }
 
         qt_extended_surface_set_content_orientation(qt_extended_surface, orientation);
